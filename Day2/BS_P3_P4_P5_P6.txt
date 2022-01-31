@@ -1,0 +1,176 @@
+PROBLEM-3:
+Find the element that appears once in a sorted array, and the rest element appears twice (Binary search)
+CODE:
+
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        
+        //high=n-2 becoj we can shrink low but not high if our ans is at last indx so for that we did n-2
+     /*   int n = nums.size();
+        int low = 0, high = n-2;
+        while(low<=high){
+            int mid =low+ (high-low)/2;
+            if(mid%2==0){
+                if(nums[mid+1]==nums[mid]) low = mid+1;
+                else high = mid-1;
+            }else{
+                if(nums[mid-1]==nums[mid]) low = mid+1;
+                else high = mid-1;
+            }
+        }
+        return nums[low];
+        */
+       /* int n=nums.size();
+        int a=0;
+        for(int i=0;i<n;i++)
+        {
+            a=a^nums[i];
+        }
+     
+     return a;*/
+        
+        //using map
+        
+        unordered_map<int,int>mp;
+        int c=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            mp[nums[i]]++;
+        }
+        for(auto it=mp.begin();it!=mp.end();it++)
+        {
+            if(it->second==1)
+            {
+                c=it->first;
+            }
+        }
+        return c;
+    
+    }
+};
+
+
+PROBLEM-4:
+Search element in a sorted and rotated array/ find pivot where it is rotated
+CODE:
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        
+     /*   int low=0;
+        int high=nums.size()-1;
+        while(low<=high)
+        {
+            int mid=(low+high)/2;
+            if(nums[mid]==target)
+                return mid;
+            else if(nums[mid]>=nums[low])
+            {
+                if(nums[mid]>=target and nums[low]<=target)
+                    high=mid-1;
+                else low=mid+1;
+            }
+            else
+            {
+                if(nums[mid]<=target and nums[high]>=target)
+                    low=mid+1;
+                   else high=mid-1;
+            }
+        }
+        return -1;*/
+        
+       // int n=nums.size();
+        for(int i=0;i<nums.size();i++)
+        {
+            if(nums[i]==target)
+                return i;
+              
+        }
+        return -1;
+    }
+};
+
+PROBLEM-5:
+Median of 2 sorted arrays
+CODE:
+class Solution {
+public:
+    class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        
+      int n = nums1.size();
+    int m = nums2.size();
+    
+    vector<double> nums3;
+    
+    for(int i=0;i<n;i++){
+        nums3.push_back(nums1[i]);
+    }
+    
+    for(int i=0;i<m;i++){
+        nums3.push_back(nums2[i]);
+    }
+    
+    sort(nums3.begin(),nums3.end());
+    
+    int k = nums3.size();
+    double res = 0;
+    
+    if(k%2 == 0){
+        
+        int idx = k/2;
+        res = (nums3[idx] + nums3[idx-1])/2;
+        
+    }else{
+        int idx = k/2;
+        res = nums3[idx];
+    }
+    return res;   
+    }
+};
+
+PROBLEM-6:
+K-th element of two sorted arrays
+CODE:
+
+
+
+int isPossible(vector < int > & A, int pages, int students) {
+  int cnt = 0;
+  int sumAllocated = 0;
+  for (int i = 0; i < A.size(); i++) {
+    if (sumAllocated + A[i] > pages) {
+      cnt++;
+      sumAllocated = A[i];
+      if (sumAllocated > pages) return false;
+    } else {
+      sumAllocated += A[i];
+    }
+  }
+  if (cnt < students) return true;
+  return false;
+}
+int Solution::books(vector<int> &A, int B) {
+      if (B > A.size()) return -1;
+  int low = A[0];
+  int high = 0;
+  //to find minimum value and sum of all pages
+  for (int i = 0; i < A.size(); i++) {
+    high = high + A[i];
+    low = min(low, A[i]);
+  }
+  //binary search
+  while (low <= high) {
+    int mid = (low + high) >> 1;
+    if (isPossible(A, mid, B)) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return low;
+    
+}
+

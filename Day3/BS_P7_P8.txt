@@ -1,0 +1,118 @@
+PROBLEM-7 :
+Allocation of minimum number of pages
+CODE:
+#include <bits/stdc++.h>
+using namespace std;
+
+bool checkCanAllocate(int arr[],int n,int m,int mid)
+{
+    int c=0;
+    int pages=0;
+    for(int i=0;i<n;i++)
+    {
+        if(arr[i]+pages>mid)
+        {
+            c++;
+            pages=arr[i];
+        }
+        else
+        {
+            pages+=arr[i];
+        }
+    }
+    c++;
+    if(c<=m)
+    return 1;
+    return 0;
+}
+
+int findPages(int arr[],int n,int m)
+{
+    if(m>n)//number of stud>numbr of pages
+    return -1;
+    int h=0;
+    int l=0;
+    for(int i=0;i<n;i++)
+    {
+        l=max(l,arr[i]);
+        h+=arr[i];
+        
+    }
+    while(l<=h)
+    {
+        int mid=l+(h-l)/2;
+        if(checkCanAllocate(arr,n,m,mid))
+        {
+            h=mid-1;
+        }
+        else
+        l=mid+1;
+    }
+    return l;
+}
+
+int main()
+{
+    int arr[] = {12, 34, 67, 90};
+    int n = sizeof arr / sizeof arr[0];
+    int m = 2; //No. of students
+ 
+    cout << "Minimum number of pages = "
+         << findPages(arr, n, m) << endl;
+    return 0;
+}
+
+
+PROBLEM-8:
+Aggressive Cows
+CODE:
+#include <bits/stdc++.h>
+#define ll;
+using namespace std;
+vector<long long >v;
+long long n,c;
+bool check(vector<long long>&arr,long long mid,long long c)
+{
+    long long cnt=1;
+    long long pre=arr[0];
+    for(int i=1;i<arr.size();i++)
+    {
+        if(arr[i]-pre >= mid)
+        {
+            cnt++;
+            pre=arr[i];
+        }
+    }
+    return cnt>=c;
+}
+
+long long main()
+{
+    long long t;
+    cin>>t;
+    while(t--)
+    {
+        v.clear();
+        cin>>n>>c;
+        long long p;
+        for(long long i=0;i<n;i++)
+        {
+            cin>>p;
+            v.push_back(p);
+        }
+        sort(v.begin(),v.end());
+        long long l=1;
+        long long h=v[n-1]-v[0];
+        while(l<=h)
+        {
+            ll mid=l+(h-l)/2;
+            if(check(v,mid,c))
+            {
+                l=mid+1;
+            }
+            else
+            h=mid-1;
+        }
+    }
+    cout<<h<<endl;
+}

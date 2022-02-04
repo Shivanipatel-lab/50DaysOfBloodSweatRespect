@@ -1,0 +1,62 @@
+
+PROBLEM-9:
+Reverse a LinkedList in groups of size k.
+CODE:
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        
+        //base cond
+        if(head==NULL || k==1)
+            return head;
+        ListNode* dum=new ListNode(0);
+        dum->next=head;
+        ListNode *cur=dum,*nex=dum,*pre=dum;
+        int c=0;
+        while(cur->next!=NULL)
+        {
+            cur=cur->next;
+            c++;
+        }
+        while(c>=k)
+        {
+            cur=pre->next;
+            nex=cur->next;
+            for(int i=1;i<k;i++)
+            {
+                cur->next=nex->next;
+                nex->next=pre->next;
+                pre->next=nex;
+                nex=cur->next;
+            }
+            pre=cur;
+            c -=k;
+        }
+        return dum->next;
+    }
+};
+
+PROBLEM-10:
+Find the starting point of the Loop of LinkedList
+CODE:
+ if(head==NULL || head->next==NULL)
+            return NULL;
+        ListNode *slow=head;
+        ListNode *fast=head;
+        ListNode* entry=head;
+        while(fast->next and fast->next->next)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+            if(slow==fast)//ther is cycle
+            {
+                while(slow!=entry)//check for entry point
+                {
+                    slow=slow->next;
+                    entry=entry->next;
+                }
+                return entry;
+            }
+        }
+        
+        return NULL;

@@ -1,0 +1,104 @@
+PROBLEM-7:
+Rotate Matrix
+CODE:
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+       
+        
+        int n=matrix.size();
+        for(int i=0;i<n;i++)
+            for(int j=0;j<i;j++)
+                swap(matrix[i][j],matrix[j][i]);
+        
+        for(int i=0;i<n;i++)
+            reverse(matrix[i].begin(),matrix[i].end());
+        
+        
+    }
+};
+
+PROBLEM-7:
+Merge Overlapping Subintervals
+CODE:
+ vector<vector<int>> merge(vector<vector<int>>& intervals) {
+     sort(intervals.begin(),intervals.end());
+        vector<vector<int>>res;
+        int start=intervals[0][0],end=intervals[0][1];
+        for(auto it:intervals)
+        {
+            if(it[0]>end)
+            {
+                res.push_back({start,end});
+                start=it[0];
+                end=it[1];
+            }
+            else
+                end=max(end,it[1]);
+        }
+        res.push_back({start,end});
+        return res;
+ }
+
+
+ PROBLEM-9:
+ Merge two sorted Arrays without extra space
+ CODE:
+ void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        
+        int i=0,j=0;
+       vector<int> nums;
+        while(i<=(m-1)&&j<=(n-1))
+        {   
+            if(nums1[i]<nums2[j])
+            {
+                nums.push_back(nums1[i]);
+                i++;
+            }
+            else if(nums1[i]>=nums2[j])  
+            {
+                nums.push_back(nums2[j]);
+                j++;
+            }
+        
+        }
+            while(i<m&&j>=n)
+            {
+                nums.push_back(nums1[i]);
+                i++;
+            }   
+            while(j<n&&i>=m)  
+            {
+                nums.push_back(nums2[j]);
+                j++;
+            }
+         nums1.clear();
+         for(int i=0;i<(m+n);i++)
+        {
+             nums1.push_back(nums[i]);
+        }
+        
+        
+    }
+
+    PROBLEM-10:
+    Find the duplicate in an array of N+1 integers.
+    CODE:
+     int findDuplicate(vector<int>& nums) {
+          int slow=nums[0];
+        int fast=nums[0];
+        do{
+            slow=nums[slow];
+            fast=nums[nums[fast]];
+        }
+        while(slow!=fast);
+        
+            fast=nums[0];
+        
+        while(slow!=fast)
+        {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+     }

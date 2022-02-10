@@ -1,0 +1,206 @@
+PROBLEM-15:
+Majority Element (>N/2 times)
+CODE:
+    int majorityElement(vector<int>& nums) {
+      
+        
+        //by using nth stl library we get the majority element.
+    /*    nth_element(begin(nums),begin(nums)+nums.size()/2,end(nums));
+        return nums.at(nums.size()/2);
+      */
+        //using hashmap
+        int n=nums.size();
+        unordered_map<int,int>mp;
+        for(int i=0;i<nums.size();i++)
+        {
+            mp[nums[i]]++;
+            if(mp[nums[i]]>(n/2))
+                return nums[i];
+        }
+        return 0;
+       
+    }
+
+    PROBLEM-16:
+    Majority Element (>N/3 times)
+    CODE:
+    vector<int> majorityElement(vector<int>& nums) {
+       /* int num1=-1,num2=-1,c1=0,c2=0;
+        int n=nums.size();
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]==num1)
+            
+                c1++;
+            else if(nums[i]==num2)
+                c2++;
+            
+            else if(c1==0)
+            {
+                num1=nums[i];
+                c1=1;
+            }
+            
+             else if(c2==0)
+            {
+                num2=nums[i];
+                c2=1;
+            }
+            else
+            {
+                c1--;
+                c2--;
+            }
+        }
+        vector<int>ans;
+        c1=c2=0;
+        for(int i=0;i<n;i++)
+        {
+           if(nums[i]==num1)
+            
+                c1++;
+            else if(nums[i]==num2)
+                c2++; 
+        }
+        if(c1>n/3)
+            ans.push_back(num1);
+        if(c2>n/3)
+            ans.push_back(num2);
+        return ans;
+        */
+        
+        //using hashmap
+        
+        int n=nums.size();
+        vector<int>res;
+       
+        unordered_map<int,int>mp;
+        set<int>s;
+        for(int i=0;i<n;i++)
+        {
+            mp[nums[i]]++;
+
+        }
+        for(auto it:mp)
+        {
+            if(it.second>n/3)
+                res.push_back(it.first);
+        }
+        return res;
+     PROBLEM-17:
+     Grid Unique Paths
+     CODE:
+     class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        
+        int dp[m][n];
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(i==0||j==0)
+                    dp[i][j]=1;
+                else
+                    
+                dp[i][j]=dp[i-1][j]+dp[i][j-1];
+            }
+        }  
+        return dp[m-1][n-1];
+    }
+};
+
+
+PROBLEM-18:
+Reverse Pairs (Leetcode)
+CODE:
+class Solution {
+    public:
+  /*  int merge(int low,int mid,int high,vector<int>& a)
+    {
+        int count=0;
+        int j=mid+1;
+        for(int i=low;i<=mid;i++)
+        {
+            while(j<=high && a[i]>(long long)2*a[j])
+            {
+                j++;
+            }
+            count+=(j-(mid+1));
+        }
+        vector<int> temp;
+        int left=low;
+        int right=mid+1;
+        while(left<=mid && right<=high)
+        {
+            if(a[left]<=a[right])
+            {
+                temp.push_back(a[left++]);
+            }
+            else
+            {
+                temp.push_back(a[right++]);
+            }
+        }
+        while(left<=mid)
+        {
+            temp.push_back(a[left++]);
+        }
+        while(right<=high)
+        {
+            temp.push_back(a[right++]);
+        }
+        for(int i=low;i<=high;i++)
+        {
+            a[i]=temp[i-low];
+        }
+        return count;
+    }
+    int mergeSort(int low,int high,vector<int>& a)
+    {
+        if(low>=high)
+        {
+            return 0;
+        }
+        int mid=(low+high)/2;
+        int count=mergeSort(low,mid,a);
+        count+=mergeSort(mid+1,high,a);
+        count+=merge(low,mid,high,a);
+        return count;
+    }
+public:
+    int reversePairs(vector<int>& nums) {
+        return mergeSort(0,nums.size()-1,nums);*/
+    void mergeArray(vector<int> &arr, int low, int mid, int high, int &cnt)
+{
+
+       int l = low, r = mid + 1;
+        while(l <= mid && r <= high){
+            if((long)arr[l] > (long) 2 * arr[r]){
+                cnt += (mid - l + 1);
+                r++;
+            }else{
+                l++;
+            }
+        }
+ sort(arr.begin()+low, arr.begin()+high+1 );
+}
+
+void mergeSort(vector<int> &arr, int low, int high, int &cnt)
+{
+    if (low < high)
+    {
+        int mid = low + (high - low) / 2;
+        mergeSort(arr, low, mid, cnt);
+        mergeSort(arr, mid + 1, high,cnt);
+
+        mergeArray(arr, low, mid, high, cnt);
+    }
+}
+    int reversePairs(vector<int>& arr) {
+        int cnt = 0;
+         mergeSort(arr, 0, arr.size() - 1, cnt);
+        return cnt;
+    
+    }
+};

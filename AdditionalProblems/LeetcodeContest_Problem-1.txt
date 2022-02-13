@@ -1,0 +1,39 @@
+
+
+
+TIME COMPLEXITY:O(NLOGN)->LOGN FOR SORTING AND O(N)FOR TRAVERSING 
+SPACE COMPLEXITY:O(N)->FOR CREATING VECTOR
+PROBLEM:
+2164. Sort Even and Odd Indices Independently
+CODE:
+class Solution {
+public:
+    vector<int> sortEvenOdd(vector<int>& nums) {
+        
+        
+       vector<int>odd,even;
+        int n=nums.size();
+        for(int i=0;i<n;i++)
+        {
+            if(i%2==0)
+                even.push_back(nums[i]);
+            else
+                odd.push_back(nums[i]);
+        }
+        sort(even.begin(),even.end());
+        sort(odd.begin(),odd.end(),greater<int>());
+        int j=0,k=0;
+        for(int i=0;i<n;i++)
+        {
+            if(i%2==0)
+            {
+                nums[i]=even[j++];
+            }
+            else
+            {
+                nums[i]=odd[k++];
+            }
+        }
+        return nums;
+    }
+};

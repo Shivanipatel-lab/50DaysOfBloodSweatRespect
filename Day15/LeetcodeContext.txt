@@ -1,0 +1,72 @@
+PROBLEM-1:
+Two Out of Three
+CODE:
+class Solution {
+public:
+    vector<int> twoOutOfThree(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3) {
+        
+        vector<int> res;
+        unordered_set <int> s1;
+        unordered_set <int> s2;
+        unordered_set <int> s3;
+        unordered_map<int,int>mpp;
+        for(int i=0;i<nums1.size();i++)
+        {
+            s1.insert(nums1[i]);
+        }
+        for(int i=0;i<nums2.size();i++)
+        {
+            s2.insert(nums2[i]);
+        }
+        for(int i=0;i<nums3.size();i++)
+        {
+            s3.insert(nums3[i]);
+        }
+        for(auto x:s1)
+        {
+            mpp[x]++;
+        }
+        for(auto x:s2)
+        {
+            mpp[x]++;
+        }
+        for(auto x:s3)
+        {
+            mpp[x]++;
+        }
+        for(auto x:mpp)
+        {
+            if(x.second>=2)
+            {
+                res.push_back(x.first);
+            }
+        }
+        return res;
+    }
+};
+
+PROBLEM-2:
+Minimum Operations to Make a Uni-Value Grid
+CODE:
+class Solution {
+public:
+    int minOperations(vector<vector<int>>& grid, int x) {
+      
+         int n = grid.size(), m = grid[0].size();
+        vector<int> nums;
+        for(auto& i : grid)
+        for(auto& j : i) 
+            nums.push_back(j);
+        sort(begin(nums), end(nums));
+        int median = nums[(n * m) / 2];
+        int cost = 0;
+        for(auto& i : nums){
+            int d = abs(i - median);
+            if(d % x) return -1;
+            cost += d / x;
+        }
+        return cost;
+        
+    }
+    
+};

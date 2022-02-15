@@ -1,0 +1,54 @@
+PROBLEM
+Maximum Difference Between Increasing Elements
+CODE
+class Solution {
+public:
+    int maximumDifference(vector<int>& nums) {
+        
+        
+        int max=0;
+        for(int i=0;i<nums.size();i++)
+        {
+            for(int j=i+1;j<nums.size();j++)
+            {
+                if(max< nums[j]-nums[i])
+                    max=nums[j]-nums[i];
+            }
+        }
+        if(max==0)
+        return -1;
+        
+        return max;
+    }
+};
+
+PROBLEM
+Grid Game
+CODE:
+class Solution {
+public:
+    long long gridGame(vector<vector<int>>& grid) {
+       
+         int n=grid[0].size();
+        if(n==1)
+            return 0;
+        long long res=0;
+        
+        long long sum=0;
+        vector<vector<long long>> prefix(2,vector<long long>(n));
+        prefix[0][0]=grid[0][0];
+        prefix[1][0]=grid[1][0];
+        for(int i=1;i<n;i++)
+        {
+            prefix[0][i]=prefix[0][i-1]+ grid[0][i];
+            prefix[1][i]=prefix[1][i-1]+ grid[1][i];
+        }
+       
+       long long mini=prefix[0][n-1]-prefix[0][0];
+        for(int j=1;j<n;j++)
+        {
+            mini=min(mini,max(prefix[1][j-1],prefix[0][n-1]-prefix[0][j]));
+        }
+        return mini;
+        
+    }

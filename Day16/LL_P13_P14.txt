@@ -1,0 +1,128 @@
+
+PROBLEM-13:
+Copy List with Random Pointer
+CODE:
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        
+       Node *curr=head,*front=head;
+    
+    while(curr!=NULL)
+    {
+        front=curr->next;
+        Node *copy=new Node(curr->val);
+        curr->next=copy;
+        copy->next=front;
+        curr=front;
+    }
+    curr=head;
+    while(curr!=NULL)
+    {
+        if(curr->random!=NULL)
+        {
+            curr->next->random=curr->random->next;
+        }
+        curr=curr->next->next;
+    }
+    curr=head;
+    Node *dummy=new Node(0);
+    Node *copy=dummy;
+    while(curr!=NULL)
+    {
+        front=curr->next->next;
+        copy->next=curr->next;
+        curr->next=front;
+        copy=copy->next;
+        curr=curr->next;
+    }
+    return dummy->next;
+    }
+};
+
+PROBLEM-14:
+3 sum
+CODE:
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+    /*   vector<vector<int>> output;
+  sort(nums.begin(), nums.end());
+  for (int i = 0; i < nums.size(); ++i) {
+    
+    if (i != 0 && nums[i] == nums[i - 1]) continue;
+    int j = i + 1;
+    int k = nums.size() - 1;
+    while (j < k) {
+      if (nums[i] + nums[j] + nums[k] == 0) {
+        output.push_back({nums[i], nums[j], nums[k]});
+        ++j;
+       
+        while (j < k && nums[j] == nums[j-1]) ++j;
+      } else if (nums[i] + nums[j] + nums[k] < 0) {
+        ++j;
+      } else {
+        --k;
+      }
+    }
+  }
+  return output;*/
+        
+        
+        //brute force
+        
+        
+/*        int len=nums.size();
+        if(len==0 || len<3) // Atleast three elemnets needed for a triplet
+            return {};
+        set<vector<int>> s; // Set stores unique elements only(duplicate triplets not added)
+        sort(nums.begin(),nums.end());
+        // Compare all cases of group of three elements for their sum=0 in O(N^3) time
+        for(int i=0;i<len-2;i++){
+            for(int j=i+1;j<len-1;j++){
+                for(int k=j+1;k<len;k++){
+                    if(nums[i]+nums[j]+nums[k]==0){
+                        s.insert({nums[i],nums[j],nums[k]});
+                    }
+                }
+            }
+        }
+        // Insert all unique triplets in result vector
+        vector<vector<int>> ans(s.begin(),s.end());
+        return ans; */
+        
+        //TC:(O(N^2))
+        int n=nums.size();
+        vector<vector<int>>res;
+        if(n<3)
+            return res;
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<n;i++)
+        {
+            if(i>0 and nums[i]==nums[i-1])
+                continue;
+            int left=i+1;
+            int right=nums.size()-1;
+            while(left<right)
+            {
+                if(nums[i]+nums[left]+nums[right]==0)
+                {
+                    res.push_back(vector<int>{nums[i],nums[left],nums[right]});
+                    while(left<right and nums[left]==nums[left]+1)
+                        left++;
+                    while(left<right and nums[right]==nums[right-1])
+            right--;
+               left++;
+                    right--;
+                    
+                }
+                else if(nums[i]+nums[left]+nums[right]<0)
+                    left++;
+                else
+                    right--;
+                    
+            }
+        }
+        return res;
+    }
+};

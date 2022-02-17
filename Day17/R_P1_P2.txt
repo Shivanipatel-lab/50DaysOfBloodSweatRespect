@@ -1,0 +1,73 @@
+PROBLEM-1:
+Subset Sums
+CODE:
+vector<int>res;
+    void find(vector<int>&arr,int idx,int N,int sum)
+    {
+        if(idx==N)
+        return;
+        for(int j=idx;j<N;j++)
+        {
+            res.push_back(sum+arr[j]);
+            find(arr,j+1,N,sum+arr[j]);
+        }
+    }
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        res.push_back(0);
+        find(arr,0,N,0);
+        return res;
+    }
+
+
+PROBLEM-2:
+Combination sum-1
+CODE:    
+class Solution {
+public:
+    
+    void helper(vector<vector<int>> &sum, vector<int>v, vector<int>&candidates,int target,int idx)
+    {
+        //base cases
+        
+        if(target==0)
+        {
+            sum.push_back(v);
+            return;
+        }
+        if(target<0)
+        {
+            return;
+        }
+        
+        //body of recursion
+        
+        for(int i=idx;i<candidates.size();i++)
+        {
+            if(candidates[i]<=target)
+            {
+                v.push_back(candidates[i]);
+                helper(sum,v,candidates,target-candidates[i],i);
+                v.pop_back();
+            }
+            else
+            {
+                break;
+            }
+        }
+        return;
+    }
+   
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        
+        vector<vector<int>>sum;
+        vector<int>v;
+        sort(candidates.begin(),candidates.end());
+        helper(sum,v,candidates,target,0);
+        return sum;
+    }
+};
+
+
+

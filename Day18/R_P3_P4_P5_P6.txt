@@ -1,0 +1,148 @@
+PROBLEM-3:
+Combination sum-1
+CODE:
+class Solution {
+public:
+    
+    void helper(vector<vector<int>> &sum, vector<int>v, vector<int>&candidates,int target,int idx)
+    {
+        //base cases
+        
+        if(target==0)
+        {
+            sum.push_back(v);
+            return;
+        }
+        if(target<0)
+        {
+            return;
+        }
+        
+        //body of recursion
+        
+        for(int i=idx;i<candidates.size();i++)
+        {
+            if(candidates[i]<=target)
+            {
+                v.push_back(candidates[i]);
+                helper(sum,v,candidates,target-candidates[i],i);
+                v.pop_back();
+            }
+            else
+            {
+                break;
+            }
+        }
+        return;
+    }
+   
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        
+        vector<vector<int>>sum;
+        vector<int>v;
+        sort(candidates.begin(),candidates.end());
+        helper(sum,v,candidates,target,0);
+        return sum;
+    }
+};
+PROBLEM-4:
+Combination sum-2
+CODE:
+class Solution {
+public:
+    
+    vector<vector<int>>mat;
+        vector<int>save;
+        void backtrack(int idx,int target,vector<int>&nums)
+        {
+            if(!target)
+            {
+                mat.push_back(save);
+            return;
+        }
+        for(int i=idx;i<nums.size() && target>=nums[i];i++)
+        {
+            if(i!=idx and nums[i]==nums[i-1])
+                continue;
+            save.push_back(nums[i]);
+            backtrack(i+1,target-nums[i],nums);
+            save.pop_back();
+        }
+        }
+        
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        
+        sort(candidates.begin(),candidates.end());
+        backtrack(0,target,candidates);
+        return mat;
+    }
+    
+};
+PROBLEM-5:
+Palindrome Partitioning
+CODE:
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        vector<vector<string> > res;
+        vector<string> path;
+        func(0, s, path, res);
+        return res;
+    }
+    
+    void func(int index, string s, vector<string> &path, 
+              vector<vector<string> > &res) {
+        if(index == s.size()) {
+            res.push_back(path);
+            return;
+        }
+        for(int i = index; i < s.size(); ++i) {
+            if(isPalindrome(s, index, i)) {
+                path.push_back(s.substr(index, i -index + 1));
+                func(i+1, s, path, res);
+                path.pop_back();
+            }
+        }
+    }
+    
+    bool isPalindrome(string s, int start, int end) {
+        while(start <= end) {
+            if(s[start++] != s[end--])
+                return false;
+        }
+        return true;
+    }
+};
+PROBLEM-6:
+K-th permutation Sequence
+CODE:
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        
+        
+        int fact=1;
+        vector<int>v;
+        
+        for(int i=1;i<n;i++)
+        {
+            fact=fact*i;
+            v.push_back(i);
+        }
+        v.push_back(n);
+        string ans="";
+        k=k-1;
+        while(true)
+        {
+            ans=ans+to_string(v[k/fact]);
+            v.erase(v.begin()+k/fact);
+            if(v.size()==0)
+            {
+                break;
+            }
+            k=k%fact;
+            fact=fact/v.size();
+        }
+        return ans;
+    }
+};

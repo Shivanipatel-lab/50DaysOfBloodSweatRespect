@@ -1,0 +1,111 @@
+PROBLEM-3:
+Sudoku Solver
+CODE:
+class Solution {
+public:
+    
+    
+    void solveSudoku(vector<vector<char>>& board) {
+        solve(board);
+    }
+    
+    bool solve(vector<vector<char>>&board)
+    {
+        for(int i=0;i<board.size();i++)
+        {
+            for(int j=0;j<board[0].size();j++)
+            {
+                if(board[i][j]=='.')
+                {
+                    for(char p='1';p<='9';p++)
+                    {
+                        if(isValid(board,i,j,p))
+                        {
+                            board[i][j]=p;
+                            
+                            if(solve(board)==true)
+                                return true;
+                            else
+                                board[i][j]='.';
+                        }
+                    }
+                    return false;
+                }
+            }
+            
+        }
+        return true;
+    }
+    bool isValid(vector<vector<char>>&board,int r,int c,char p)
+    {
+            for(int i=0;i<9;i++)
+            {
+                if(board[i][c]==p)
+                    return false;
+                if(board[r][i]==p)
+                    return false;
+                if(board[3*(r/3)+i/3][3*(c/3)+i%3]==p)
+                    return false;
+            }
+        return true;
+    }
+};
+PROBLEM-4:
+M-Coloring Problem 
+CODE:
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+ // } Driver Code Ends
+//Function to determine if graph can be coloured with at most M colours such
+//that no two adjacent vertices of graph are coloured with same colour.
+bool help(bool mat[101][101],int n,int c,vector<int> &col,int V){
+    for(int i = 0; i < V ; i ++){
+        if(i == n) continue;
+        if(mat[n][i] == 1 and col[i] == c )
+            return false;
+    }
+    return true;
+}
+bool coloring(bool mat[101][101],int n,vector<int> &col,int V,int m){
+     if( n == V ) { return true; }
+     for(int i  = 0 ; i <  m ; i ++){
+        if(help(mat,n,i,col,V) == true){
+            col[n] = i;
+            if(coloring(mat , n + 1 , col , V , m)) return true;
+            col[n] = -1; 
+         }
+        }
+    return false;
+}
+bool graphColoring(bool graph[101][101], int m, int V)
+{
+    vector<int> col(V,-1);
+    return coloring(graph,0,col,V,m);
+}
+// { Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, m, e;
+        cin >> n >> m >> e;
+        int i;
+        bool graph[101][101];
+        for (i = 0; i < n; i++) {
+            memset(graph[i], 0, sizeof(graph[i]));
+        }
+        for (i = 0; i < e; i++) {
+            int a, b;
+            cin >> a >> b;
+            graph[a - 1][b - 1] = 1;
+            graph[b - 1][a - 1] = 1;
+        }
+        cout << graphColoring(graph, m, n) << endl;
+    }
+    return 0;
+}
+  // } Driver Code Ends

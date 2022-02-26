@@ -1,0 +1,124 @@
+PROBLEM-9:
+Coin change
+CODE:
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        
+        int n=coins.size();
+        int dp[n+1][amount+1];
+        for(int i=0;i<n+1;i++)
+        {
+            for(int j=0;j<amount+1;j++)
+            {
+                if(i==0)
+                {
+                    dp[i][j]=INT_MAX-1;
+                }
+                if(j==0)
+                {
+                    dp[i][j]=0;
+                }
+                if(i==1)
+                {
+                    if(j%coins[0]==0)
+                    {
+                        dp[i][j]=j/coins[0];
+                    }
+                    else
+                    {
+                        dp[i][j]=INT_MAX-1;
+                    }
+                }
+            }
+        }
+        for(int i=2;i<n+1;i++)
+        {
+            for(int j=1;j<amount+1;j++)
+            {  
+                if(coins[i-1]<=j)
+                {
+                dp[i][j]=min(1+dp[i][j-coins[i-1]],dp[i-1][j]);
+                }
+                else
+                {
+                    dp[i][j]=dp[i-1][j];
+                }
+            }
+        }
+        if(dp[n][amount]!=INT_MAX-1)
+            return dp[n][amount];
+       return -1;
+        
+    }
+};
+PROBLEM-10:
+Subset Sum
+CODE:
+class Solution {
+public:
+   
+    bool canPartition(vector<int>& nums) {
+        
+        int sum=0;
+        //int N=nums.size();
+        for(int i=0;i<nums.size();i++)
+            sum+=nums[i];
+        if(sum%2!=0)
+        
+        return false;
+        sum=sum/2;
+        int n=nums.size();
+         bool t[n+1][sum+1];
+         for(int i=0;i<=n;i++)
+        {
+            for(int j=0;j<=sum;j++)
+            {
+                if(i==0)
+                    t[i][j]=false;
+                if(j==0)
+                    t[i][j]=true;
+            }
+        }
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=sum;j++)
+            {
+                if(nums[i-1]<=j)
+                {
+                    t[i][j]=t[i-1][j-nums[i-1]] || t[i-1][j];
+                }
+                else
+                {
+                    t[i][j]=t[i-1][j];
+                }
+            }
+        }
+        return t[n][sum];
+    }
+};
+PROBLEM-11:
+Rod Cutting
+CODE:
+class Solution {
+public:
+    int minCost(int n, vector<int>& cuts) {
+        
+        
+        int dp[n+1];
+        dp[0]=0;
+        for(int i=2;i<n;i++)
+        {
+            int mini=INT_MAX;
+            for(int j=0;j<n-i;j++)
+            {  
+                for(int k=j+1;k<j;k++)
+                {
+                mini=min(mini,cuts[j]+dp[i-j-1]);
+                }
+            }
+            dp[i]=mini;
+        }
+        return dp[n];
+    }
+};

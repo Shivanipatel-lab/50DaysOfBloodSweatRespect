@@ -1,0 +1,139 @@
+PROBLEM-12:
+Egg Dropping
+CODE:
+int t[201][201];
+    int solve(int e,int f){
+        if(e == 1 or f == 0 or f == 1){
+            return f;
+        }
+        if(t[e][f] != -1){
+            return t[e][f];
+        }
+        int ans = INT_MAX;
+        for(int i=1;i<=f;i++){
+            int temp = 1 + max(solve(e-1,i-1),solve(e,f-i));
+            ans = min(ans,temp);
+        }
+        return t[e][f] = ans;
+    }
+    int eggDrop(int n, int k) 
+    {
+        // your code here
+        memset(t,-1,sizeof t);
+        solve(n,k);
+    }
+PROBLEM-13:
+Word Break
+CODE:
+
+PROBLEM-14:
+Palindromic patitioning
+CODE:
+class Solution{
+public:
+int t[1001][1001];
+     bool isPalindrome(string s,int i,int j)
+     {
+         if(i==j)
+         return true;
+         if(i>j)
+         return true;
+         while(i<j)
+         {
+             if(s[i]!=s[j])
+             return false;
+             i++;
+             j--;
+         }
+     }
+     int solve(string &s,int i,int j)
+     {
+         if(i>=j)
+         return 0;
+         if(isPalindrome(s,i,j)==true)
+         return 0;
+         if(t[i][j]!=-1)
+         return t[i][j];
+         int mn=INT_MAX;
+         int left,right;
+         for(int k=i;k<j;k++)
+         {   
+             if(t[i][k]!=-1){
+                left = t[i][k];
+            }
+            else{
+                left = solve(s,i,k);
+                t[i][k] = left;
+            }
+            if(t[k+1][j]!=-1){
+                right = t[k+1][j];
+            }
+            else{
+                right = solve(s,k+1,j);
+                t[k+1][j] = right;
+            }
+             int tmp=1+left+right;
+             mn=min(mn,tmp);
+         }
+         return t[i][j]=mn;
+     }
+    int palindromicPartition(string str)
+    {
+        // code here
+        memset(t,-1,sizeof(t));
+        return solve(str,0,str.size()-1);
+    }
+PROBLEM-15:
+Maximum profit in Job scheduling
+CODE:
+class Solution 
+{
+    public:
+    //Function to find the maximum profit and the number of jobs done.
+    
+    static bool mycmp(Job a,Job b)
+   {
+       return a.profit > b.profit ;
+   }
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        // your code here
+        vector<int> res;
+       int res1 = 0;
+       int res2 = 0;
+       int maxm=0;
+       
+       for(int i=0;i<n;i++)
+           maxm=max(maxm,arr[i].dead);
+           
+       int slot[maxm]={0};
+       
+       sort(arr,arr+n,mycmp);
+       
+       for(int i=0;i<n;i++)
+       {
+           if(slot[arr[i].dead-1]==0)
+           {
+               res2+=arr[i].profit;
+               res1++;
+               slot[arr[i].dead-1]=1;
+               continue;
+           }
+           for(int j=arr[i].dead-1;j>=0;j--)
+           {
+               if(slot[j]==0)
+               {
+                   res2+=arr[i].profit;
+                   res1++;
+                   slot[j]=1;
+                   break;
+               }
+           }
+       }
+       
+       res.push_back(res1);
+       res.push_back(res2);
+       
+       return res;
+    } 
+};

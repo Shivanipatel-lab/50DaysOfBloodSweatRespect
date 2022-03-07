@@ -1,0 +1,154 @@
+Problem-4:
+Next Smaller Element
+CODE:
+vector<int> Solution::prevSmaller(vector<int> &A) {
+
+    int n=A.size();
+    vector<int>nse(n,-1);
+    stack<int>s;
+    for(int i=0;i<n;i++)
+    {
+        while(!s.empty() && s.top()>=A[i])
+        s.pop();
+        if(!s.empty())
+        nse[i]=s.top();
+        s.push(A[i]);
+    }
+    return nse;
+}
+Problem-5:
+LRU cache (IMPORTANT)
+CODE:
+class LRUCache {
+public:
+    class node {
+        public:
+            int key;
+            int val;
+            node* next;
+            node* prev;
+        node(int _key, int _val) {
+            key = _key;
+            val = _val; 
+        }
+    };
+    
+    node* head = new node(-1,-1);
+    node* tail = new node(-1,-1);
+    
+    int cap;
+    unordered_map<int, node*>m;
+    
+    LRUCache(int capacity) {
+        cap = capacity;    
+        head->next = tail;
+        tail->prev = head;
+    }
+    
+    void addnode(node* newnode) {
+        node* temp = head->next;
+        newnode->next = temp;
+        newnode->prev = head;
+        head->next = newnode;
+        temp->prev = newnode;
+    }
+    
+    void deletenode(node* delnode) {
+        node* delprev = delnode->prev;
+        node* delnext = delnode->next;
+        delprev->next = delnext;
+        delnext->prev = delprev;
+    }
+    
+    int get(int key_) {
+        if (m.find(key_) != m.end()) {
+            node* resnode = m[key_];
+            int res = resnode->val;
+            m.erase(key_);
+            deletenode(resnode);
+            addnode(resnode);
+            m[key_] = head->next;
+            return res; 
+        }
+    
+        return -1;
+    }
+    
+    void put(int key_, int value) {
+        if(m.find(key_) != m.end()) {
+            node* existingnode = m[key_];
+            m.erase(key_);
+            deletenode(existingnode);
+        }
+        if(m.size() == cap) {
+          m.erase(tail->prev->key);
+          deletenode(tail->prev);
+        }
+        
+        addnode(new node(key_, value));
+        m[key_] = head->next; 
+    }
+};
+Problem-6:
+Largest rectangle in a histogram
+CODE:
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        
+        //include nge and nse concept
+        
+        int n=heights.size();
+        stack<int>s;
+        int left[n],right[n];
+        for(int i=0;i<n;i++)
+        {
+            while(!s.empty() && heights[s.top()] >= heights[i])
+            {
+                s.pop();
+            }
+            if(s.empty())
+                left[i]=0;
+                else
+                    left[i]=s.top()+1;
+                    s.push(i);
+        }
+      
+      while(!s.empty())
+          s.pop();
+        
+        for(int i=n-1;i>=0;i--)
+        {
+            while(!s.empty() && heights[s.top()]>=heights[i])
+            {
+                s.pop();
+            }
+            if(s.empty())
+                right[i]=n-1;
+            else
+                right[i]=s.top()-1;
+            s.push(i);
+        }
+        
+         int maxA=0;
+        for(int i=0;i<n;i++)
+        {
+            maxA=max(maxA,heights[i]*(right[i]-left[i]+1));
+        }
+        return maxA;
+        
+        //brute force->TLE
+       /* int n=heights.size();
+        int maxArea=0;
+        for(int i=0;i<n;i++)
+        {
+            int minHeight=INT_MAX;
+            for(int j=i;j<n;j++)
+            {
+                minHeight=min(minHeight,heights[j]);
+                maxArea=max(maxArea,minHeight*(j-i+1));
+            }
+        }
+        return maxArea;*/
+    }
+};

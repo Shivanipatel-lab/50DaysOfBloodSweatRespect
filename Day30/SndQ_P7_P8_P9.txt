@@ -1,0 +1,133 @@
+PROBLEM-7
+Sliding Window maximum
+CODE:
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        
+     deque < int > dq;
+     vector < int > ans;
+    for (int i = 0; i < nums.size(); i++) {
+    if (!dq.empty() && dq.front() == i - k) dq.pop_front();
+
+    while (!dq.empty() && nums[dq.back()] < nums[i])
+      dq.pop_back();
+
+    dq.push_back(i);
+    if (i >= k - 1) ans.push_back(nums[dq.front()]);
+  }
+  return ans;
+        
+        //brute force->TLE->TC(O(N^2))
+     /*   vector<int>res;
+        int i=0;
+        int j=k-1;
+        while(j<nums.size())
+        {
+            int maxi=nums[i];
+            for(int p=i+1;p<=j;p++)
+            {
+                maxi=max(maxi,nums[p]);
+            }
+            res.push_back(maxi);
+            i++;
+            j++;
+        }
+       return res;*/
+    }
+};
+PROBLEM-8
+Implement Min Stack
+CODE:
+class MinStack {
+public:
+    /** initialize your data structure here. */
+    stack<pair<int,int>>s;
+    
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+       if(s.empty())
+       {
+           s.push({val,val});
+       }
+        else
+        {
+            int min;
+            if(val<s.top().second)
+                min = val;
+            else
+                min=s.top().second;
+            
+            s.push({val,min});
+        }
+    }
+    
+    void pop() {
+       if(s.empty())
+           return;
+        s.pop();
+    }
+    
+    int top() {
+         return s.top().first;
+    }
+    
+    int getMin() {
+        return s.top().second;
+    }
+};
+PROBLEM-9
+Rotten Orange (Using BFS)
+CODE:
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        
+        //take a queue
+         queue<pair<int, int>> rotten;
+        int r = grid.size(), c = grid[0].size(), fresh = 0, t = 0;
+        for(int i = 0; i < r; ++i){
+            for(int j = 0; j < c; ++j){
+                if(grid[i][j] == 2) rotten.push({i, j});
+                else if(grid[i][j] == 1) fresh++;
+            }
+        }
+        
+        while(!rotten.empty()){
+            int num = rotten.size();
+            for(int i = 0; i < num; ++i){
+                int x = rotten.front().first, y = rotten.front().second;
+                rotten.pop();
+                if(x > 0 && grid[x-1][y] == 1)
+                { 
+                    grid[x-1][y] = 2;
+                    fresh--; 
+                    rotten.push({x-1, y});
+                };
+                if(y > 0 && grid[x][y-1] == 1)
+                { 
+                    grid[x][y-1] = 2;
+                    fresh--; 
+                    rotten.push({x, y-1});
+                };
+                if(x < r-1 && grid[x+1][y] == 1)
+                { 
+                    grid[x+1][y] = 2; 
+                    fresh--;
+                    rotten.push({x+1, y});
+                };
+                if(y < c-1 && grid[x][y+1] == 1)
+                { 
+                    grid[x][y+1] = 2;
+                    fresh--; 
+                    rotten.push({x, y+1});
+                };
+            }
+            if(!rotten.empty()) t++;
+        }
+        return (fresh == 0) ? t : -1;
+    }
+};

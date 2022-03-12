@@ -1,0 +1,106 @@
+PROBLEM-1:
+Inorder Traversal
+CODE:
+class Solution {
+public:
+    
+    void tree(TreeNode* root,vector<int>&v)
+    {
+        if(root==NULL)
+            return;
+        tree(root->left,v);
+        v.push_back(root->val);
+        tree(root->right,v);
+            
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        
+        vector<int>v;
+        tree(root,v);
+        return v;
+    }
+};
+PROBLEM-2:
+Preorder Traversal
+CODE:
+class Solution {
+public:
+     vector<int> preorderTraversal(TreeNode* root){
+    stack<TreeNode*> s;
+    vector<int> v;
+    if(root==NULL)
+        return v;
+    s.push(root);
+    while(s.size())
+    {
+        auto a=s.top();
+        s.pop();
+        v.push_back(a->val);
+        if(a->right) s.push(a->right);
+        if(a->left) s.push(a->left);
+    }
+      return v;
+    /*
+    void tree(TreeNode* root,vector<int>&v)
+    {
+        if(root==NULL)
+            return;
+        v.push_back(root->val);
+        tree(root->left,v);
+        tree(root->right,v);
+    }
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int>v;
+        tree(root,v);
+        return v;
+        */
+    
+    }
+};
+PROBLEM-3:
+Postorder Traversal
+CODE:
+class Solution {
+public:
+    
+    void tree(TreeNode* root,vector<int>&v)
+    {
+        if(root==NULL)
+            return;
+       
+         tree(root->left,v);
+       
+        tree(root->right,v);
+         v.push_back(root->val);
+        
+        
+    }
+    vector<int> postorderTraversal(TreeNode* root) {
+        
+        vector<int>v;
+        tree(root,v);
+        return v;
+    }
+};
+PROBLEM-4:
+Morris Inorder Traversal
+CODE:
+class Solution {
+public:
+    
+    void tree(TreeNode* root,vector<int>&v)
+    {
+        if(root==NULL)
+            return;
+        tree(root->left,v);
+        v.push_back(root->val);
+        tree(root->right,v);
+            
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        
+        vector<int>v;
+        tree(root,v);
+        return v;
+    }
+};

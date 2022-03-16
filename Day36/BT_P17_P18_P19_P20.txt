@@ -1,0 +1,92 @@
+PROBLEM-17:
+Check if two trees are identical or not
+CODE:
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        
+        if(p==NULL && q==NULL)
+            return true;
+        if(q==NULL || p==NULL)
+            return false;
+        if(p->val!=q->val)
+            return false;
+        return isSameTree(p->right,q->right) and isSameTree(p->left,q->left);
+        
+    
+    }
+};
+PROBLEM-18:
+Zig Zag Traversal of Binary Tree
+CODE:
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        
+        vector<vector<int>>res;
+        if(root==NULL)
+            return res;
+        queue<TreeNode*>q;
+        
+        q.push(root);
+        int flag=0;//left to right
+        
+        while(!q.empty())
+        {
+            int n=q.size();
+            vector<int>zig;
+            for(int i=0;i<n;i++)
+            {
+                TreeNode* node=q.front();
+                q.pop();
+                if(node->left!=NULL)
+                {
+                    q.push(node->left);
+                }
+                 if(node->right!=NULL)
+                {
+                    q.push(node->right);
+                }
+                zig.push_back(node->val);
+            }
+        
+        if(flag==1)
+        {
+            reverse(zig.begin(),zig.end());
+            flag=0;
+        }
+        else
+        {
+            flag=1;
+        }
+        
+        res.push_back(zig);
+    }
+        return res;
+    }
+};
+PROBLEM-19:
+Boundary Traversal of Binary Tree
+CODE:
+
+PROBLEM-20:
+Maximum path sum
+CODE:
+class Solution {
+public:
+    int findMaxpath(TreeNode* root,int &maxi)
+    {
+        if(root==NULL)
+            return 0;
+        int left=max(0,findMaxpath(root->left,maxi));
+        int right=max(0,findMaxpath(root->right,maxi));
+        int val=root->val;
+        maxi=max(maxi,(left+right)+val);
+        return max(left,right)+val;
+    }
+    int maxPathSum(TreeNode* root) {
+        int maxi=INT_MIN;
+        findMaxpath(root,maxi);
+        return maxi;
+    }
+};

@@ -1,0 +1,249 @@
+PROBLEM-1:
+Populate Next Right pointers of Tree
+CODE:
+class Solution {
+public:
+    Node* connect(Node* root) {
+        
+     /*   if(root==NULL)
+            return NULL;
+        if(root->left!=NULL)
+        {
+            root->left->next=root->right;
+            root->left=connect(root->left);
+        }
+        if(root->right)
+        {
+            if(!root->next)
+                root->right->next=NULL;
+            else
+                root->right->next=root->next->left;
+            root->right=connect(root->right);
+        }
+        return root;*/
+         if(root == NULL)
+            return root;
+        
+        queue<Node*> q;
+        q.push(root);
+        
+        while(!q.empty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Node* temp = q.front();
+                q.pop();
+                if(i+1 == size){
+                    temp->next = NULL;
+                }else{
+                    temp->next = q.front();
+                }
+                if(temp->left != NULL) q.push(temp->left);
+                if(temp->right != NULL) q.push(temp->right);
+            }
+        }
+        return root;
+    }
+};
+PROBLEM-2:
+Search given Key in BST
+CODE:
+class Solution {
+public:
+    TreeNode* res;
+    void search(TreeNode* root, int val)
+    {
+        if(root==NULL)
+            return ;
+        if(root->val==val)
+        {
+            res=root;
+            return;
+        }
+        if(val<root->val)
+            search(root->left,val);
+        else
+            search(root->right,val);
+    }
+    TreeNode* searchBST(TreeNode* root, int val) {
+        
+       search(root,val);
+        return res;
+        
+    }
+};
+PROBLEM-3:
+Construct BST from given keys
+CODE:
+Node* inpre(Node* root)
+{    
+    Node* p=root->left; //left store 
+    while(p->right)//move extreme right exist
+    {
+        p=p->right;
+    }
+    return p;
+}
+
+Node* insuc(Node* root)
+{    
+    Node* p=root->right;
+    while(p->left)
+   {
+       p=p->left;
+   }
+    return p;
+}
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+{
+
+// Your code goes here
+    if(!root)
+    return;
+    if(root->key==key)
+    {
+        if(root->left)//check left exist or not
+        pre=inpre(root);
+        if(root->right)//right exist or not
+        suc=insuc(root);
+        return;
+    }
+    if(key > root->key)  //move right update pred
+    {
+        pre=root;
+        findPreSuc(root->right,pre,suc,key);
+    }
+    if(key < root->key)   // move left update succ
+    {
+        suc=root;
+        findPreSuc(root->left,pre,suc,key);
+    }
+
+
+
+
+}
+PROBLEM-4:
+Construct BST from preorder traversal
+CODE:
+class Solution {
+public:
+ /*  void inOrder(TreeNode* root,vector<int> &v)
+    {
+		//Left SubTree
+        if(root->left != NULL)
+            inOrder(root->left,v);
+		//root
+        v.push_back(root->val);
+		//right subtree
+        if(root->right != NULL)
+            inOrder(root->right,v);
+    }
+    bool isValidBST(TreeNode* root) {
+        vector<int> v;
+        inOrder(root,v);
+		//if array is sorted or not
+        for(int i=0;i<v.size()-1;i++)
+        {
+            if(v[i]<v[i+1])
+                continue;
+            else
+                return false;
+        }
+        return true;
+     */
+    stack<TreeNode*>s;
+    TreeNode* prev=NULL;
+     bool isValidBST(TreeNode* root)
+     {
+         while(root||!s.empty())
+         {
+             while(root)
+             {
+                 s.push(root);
+                 root=root->left;
+             }
+             root=s.top();
+             s.pop();
+             if(prev and root->val<=prev->val)
+                 return false;
+             prev=root;
+             root=root->right;
+             
+         }
+     return true;
+    }
+}; 
+    
+PROBLEM-5:
+Check is a BT is BST or not
+CODE:
+class Solution {
+public:
+ /*  void inOrder(TreeNode* root,vector<int> &v)
+    {
+		//Left SubTree
+        if(root->left != NULL)
+            inOrder(root->left,v);
+		//root
+        v.push_back(root->val);
+		//right subtree
+        if(root->right != NULL)
+            inOrder(root->right,v);
+    }
+    bool isValidBST(TreeNode* root) {
+        vector<int> v;
+        inOrder(root,v);
+		//if array is sorted or not
+        for(int i=0;i<v.size()-1;i++)
+        {
+            if(v[i]<v[i+1])
+                continue;
+            else
+                return false;
+        }
+        return true;
+     */
+    stack<TreeNode*>s;
+    TreeNode* prev=NULL;
+     bool isValidBST(TreeNode* root)
+     {
+         while(root||!s.empty())
+         {
+             while(root)
+             {
+                 s.push(root);
+                 root=root->left;
+             }
+             root=s.top();
+             s.pop();
+             if(prev and root->val<=prev->val)
+                 return false;
+             prev=root;
+             root=root->right;
+             
+         }
+     return true;
+    }
+}; 
+    
+PROBLEM-6:
+Find LCA of two nodes in BST
+CODE:
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+         if(root==NULL || p==root || q==root)
+         {
+             return root;
+         }
+      TreeNode* left=lowestCommonAncestor(root->left,p,q);
+       TreeNode* right=lowestCommonAncestor(root->right,p,q);
+        if(left==NULL)
+            return right;
+        if(right==NULL)
+            return left;
+        else 
+            return root;
+    }
+};

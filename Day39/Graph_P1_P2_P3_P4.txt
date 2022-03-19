@@ -1,0 +1,177 @@
+PROBLEM-1:
+Clone a graph (Not that easy as it looks)
+CODE:
+class Solution {
+    
+    private: 
+        unordered_map<int,Node*>mp;
+public:
+    
+    Node* helper(Node* node)
+    /*{
+        if(mp.find(node->val)!=mp.end())
+            return mp[node->val];
+        
+        Node* newGraph=new Node(node->val);
+        mp[node->val]=newGraph;
+        
+        for(auto i: node->neighbors)
+            newGraph->neighbors.push_back(helper(i));
+        return newGraph;
+    }*/
+    {
+        if(mp.find(node->val)!=mp.end())
+            return mp[node->val];
+         Node* copyGraph=new Node(node->val);
+             mp[node->val]=copyGraph;
+         for(auto i:node->neighbors)
+             copyGraph->neighbors.push_back(helper(i));
+             return copyGraph;
+    }
+   Node* cloneGraph(Node* node) {
+       if(!node)
+            return NULL;
+        return helper(node);
+    }
+};
+PROBLEM-2:
+DFS
+CODE:
+class Solution {
+    
+    private: 
+        unordered_map<int,Node*>mp;
+public:
+    
+    Node* helper(Node* node)
+    /*{
+        if(mp.find(node->val)!=mp.end())
+            return mp[node->val];
+        
+        Node* newGraph=new Node(node->val);
+        mp[node->val]=newGraph;
+        
+        for(auto i: node->neighbors)
+            newGraph->neighbors.push_back(helper(i));
+        return newGraph;
+    }*/
+    {
+        if(mp.find(node->val)!=mp.end())
+            return mp[node->val];
+         Node* copyGraph=new Node(node->val);
+             mp[node->val]=copyGraph;
+         for(auto i:node->neighbors)
+             copyGraph->neighbors.push_back(helper(i));
+             return copyGraph;
+    }
+   Node* cloneGraph(Node* node) {
+       if(!node)
+            return NULL;
+        return helper(node);
+    }
+};
+PROBLEM-3:
+BFS
+CODE:
+ vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+        // Code here
+        
+        queue<int>q;
+        vector<int>res;
+        vector<int>vis(V);
+        q.push(0);
+        vis[0]=1;
+        while(!q.empty())
+        {   
+            
+            int node=q.front();
+            int n=adj[node].size();
+            res.push_back(node);
+            q.pop();
+            for(int i=0;i<n;i++)
+            {
+                if(vis[adj[node][i]]==0)
+                {
+                    vis[adj[node][i]]=1;
+                    q.push(adj[node][i]);
+                }
+            }
+        }
+        return res;
+    }
+PROBLEM-4:
+Detect A cycle in Undirected Graph using BFS
+CODE:
+class Solution {
+public:
+    
+    bool isCyclic(vector<vector<int>>& adj, int curr, vector<int>& vis) {
+       if(vis[curr] == 1) {
+            return true;
+        }
+        
+        vis[curr] = 1;
+        for(int i=0; i<adj[curr].size(); i++) {
+            if(vis[adj[curr][i]] != 2 && isCyclic(adj, adj[curr][i], vis)) {
+                return true;
+            }
+        }
+        vis[curr] = 2;
+        return false;
+    }
+    
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+       vector<vector<int>> adj(numCourses);
+        for(int i=0; i<prerequisites.size(); i++) {
+            adj[prerequisites[i][0]].push_back(prerequisites[i][1]); 
+        }
+        
+        vector<int> vis(numCourses, 0);
+        
+        for(int i=0; i<numCourses; i++) {
+            if(!vis[i] && isCyclic(adj, i, vis)) {
+                return false;
+            }
+        }
+        
+        return true;
+     /*   vector<int>adj[numCourses];
+        for(int i=0;i<prerequisites.size();i++)
+        {
+            adj[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        int c=0;
+        queue<int>q;
+        vector<int>indegree(numCourses,0);
+        for(int i = 0; i < prerequisites.size(); i++)
+        {
+            indegree[prerequisites[i][0]]++;
+        }
+        
+        for(int i=0;i<indegree.size();i++)
+        {
+            if(indegree[i]==0)
+                q.push(i);
+        }
+        while(!q.empty())
+        {
+            int tmp=q.front();
+            q.pop();
+            c++;
+            for(auto v:adj[tmp])
+            {
+                indegree[v]--;
+                
+                    if(indegree[v]==0)
+                    {
+                        q.push(v);
+                    }
+                
+            }
+           
+        }   
+         if(c==numCourses)
+                return true;
+            return false;*/
+    }
+};

@@ -1,0 +1,291 @@
+PROBLEM-5:
+Topological Sort BFS
+CODE:
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution
+{
+    
+    void findTopoSort(int node,vector<int>&vis,stack<int>&st,vector<int>adj[])
+    {
+        vis[node] = 1;
+        for(auto it:adj[node])
+        {
+            if(!vis[it])
+            {
+                findTopoSort(it,vis,st,adj);
+            }
+        }
+        st.push(node);   
+    }
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    
+	    stack<int>st;//create a stack to store visited node
+	    vector<int>vis(V,0);//visited array
+	    for(int i=0;i<V;i++)
+	    {
+	        if(vis[i]==0)
+	        {
+	        findTopoSort(i,vis,st,adj);
+	        }
+	    }
+	
+	vector<int>topo;
+	while(!st.empty())
+	{
+	    topo.push_back(st.top());
+	    st.pop();
+	}
+	return topo;
+	}
+};
+
+// { Driver Code Starts.
+
+/*  Function to check if elements returned by user
+*   contains the elements in topological sorted form
+*   V: number of vertices
+*   *res: array containing elements in topological sorted form
+*   adj[]: graph input
+*/
+int check(int V, vector <int> &res, vector<int> adj[]) {
+    
+    if(V!=res.size())
+    return 0;
+    
+    vector<int> map(V, -1);
+    for (int i = 0; i < V; i++) {
+        map[res[i]] = i;
+    }
+    for (int i = 0; i < V; i++) {
+        for (int v : adj[i]) {
+            if (map[i] > map[v]) return 0;
+        }
+    }
+    return 1;
+}
+
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        int N, E;
+        cin >> E >> N;
+        int u, v;
+
+        vector<int> adj[N];
+
+        for (int i = 0; i < E; i++) {
+            cin >> u >> v;
+            adj[u].push_back(v);
+        }
+        
+        Solution obj;
+        vector <int> res = obj.topoSort(N, adj);
+
+        cout << check(N, res, adj) << endl;
+    }
+    
+    return 0;
+}  // } Driver Code Ends
+PROBLEM-6:
+Topological Sort DFS
+CODE:
+// { Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+ // } Driver Code Ends
+class Solution
+{
+    
+    void findTopoSort(int node,vector<int>&vis,stack<int>&st,vector<int>adj[])
+    {
+        vis[node] = 1;
+        for(auto it:adj[node])
+        {
+            if(!vis[it])
+            {
+                findTopoSort(it,vis,st,adj);
+            }
+        }
+        st.push(node);   
+    }
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    
+	    stack<int>st;//create a stack to store visited node
+	    vector<int>vis(V,0);//visited array
+	    for(int i=0;i<V;i++)
+	    {
+	        if(vis[i]==0)
+	        {
+	        findTopoSort(i,vis,st,adj);
+	        }
+	    }
+	
+	vector<int>topo;
+	while(!st.empty())
+	{
+	    topo.push_back(st.top());
+	    st.pop();
+	}
+	return topo;
+	}
+};
+
+// { Driver Code Starts.
+
+/*  Function to check if elements returned by user
+*   contains the elements in topological sorted form
+*   V: number of vertices
+*   *res: array containing elements in topological sorted form
+*   adj[]: graph input
+*/
+int check(int V, vector <int> &res, vector<int> adj[]) {
+    
+    if(V!=res.size())
+    return 0;
+    
+    vector<int> map(V, -1);
+    for (int i = 0; i < V; i++) {
+        map[res[i]] = i;
+    }
+    for (int i = 0; i < V; i++) {
+        for (int v : adj[i]) {
+            if (map[i] > map[v]) return 0;
+        }
+    }
+    return 1;
+}
+
+int main() {
+    int T;
+    cin >> T;
+    while (T--) {
+        int N, E;
+        cin >> E >> N;
+        int u, v;
+
+        vector<int> adj[N];
+
+        for (int i = 0; i < E; i++) {
+            cin >> u >> v;
+            adj[u].push_back(v);
+        }
+        
+        Solution obj;
+        vector <int> res = obj.topoSort(N, adj);
+
+        cout << check(N, res, adj) << endl;
+    }
+    
+    return 0;
+}  // } Driver Code Ends
+PROBLEM-7:
+Number of islands(Do in Grid and Graph Both)
+CODE:
+class Solution {
+public:
+    void dfs(int i,int j,vector<vector<char>>& grid)
+    {
+        int n=grid.size();
+        int m=grid[0].size();
+        if(i<0||j<0)
+            return ;
+        if(i>=n||j>=m)
+            return;
+        if(grid[i][j]!='1')
+            return;
+        if(grid[i][j]=='1')
+        {
+            grid[i][j]='0';
+            dfs(i+1,j,grid);
+            dfs(i,j+1,grid);
+            dfs(i-1,j,grid);
+            dfs(i,j-1,grid);
+        }
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        
+            int n = grid.size();
+            int m = grid[0].size();
+            int cnt = 0;
+            for(int i = 0; i < n; ++i ){
+            for(int j = 0; j < m; ++j){
+            if(grid[i][j] == '1'){
+
+             dfs(i,j,grid);
+             cnt++;
+                    }
+            }
+    }
+    return cnt;
+        
+    }
+};
+PROBLEM-8:
+Bipartite Check using BFS
+CODE:
+class Solution {
+public:
+    //given fn
+    bool isBipartite(vector<vector<int>>& graph) {
+        
+        int n=graph.size();
+        int color[n];
+        for(int i=0;i<n;i++)
+        {
+            color[i]=-1;
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(color[i]==-1)
+                if(!bipartite(i,graph,color))
+                {
+                    return false;
+                }
+        }
+         
+        return true;
+    }
+    
+    bool bipartite(int node,vector<vector<int>>& graph,int color[])
+    {
+        color[node]=0;
+        queue<int>q;
+        q.push(node);
+        while(!q.empty())
+        {
+            int temp=q.front();
+            q.pop();
+            for(auto i:graph[temp])
+            {
+                if(color[i]==-1)
+                {
+                    color[i]=1-color[temp];//color node of diff color
+                    q.push(i);
+                }
+                else
+                {
+                    if(color[i]==color[temp])
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;  
+    }
+  
+};

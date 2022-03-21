@@ -1,0 +1,143 @@
+PROBLEM-9:
+Strongly Connected Component(using KosaRaju’s algo)
+CODE:
+class Solution {
+public:
+    static bool customSort(pair<int, int>& p1, pair<int, int>& p2) {
+        return p1.second - p1.first < p2.second - p2.first;
+    }
+    bool isOverlap(vector<pair<int, int>>& arr, int start, int end) {
+        if (arr.empty()) return false;
+        
+        for (auto idxs : arr) {
+            int s = idxs.first, e = idxs.second;
+            if (end >= s && e >= start) return true;
+        }
+        return false;
+    }
+    vector<string> maxNumOfSubstrings(string s) {
+        unordered_map<char, pair<int, int>> dict;
+        vector<string> ans;
+        for (int i = 0; i < s.length(); ++i) {
+            if (dict.count(s[i])) dict[s[i]].second = i;
+            else dict[s[i]] = {i, i};
+        }
+        
+    
+        for (auto& d : dict) {
+            int& start = d.second.first;
+            int& end = d.second.second;
+            stack<pair<int, int>> st;
+            st.push({start, end});
+            while (!st.empty()) {
+                pair<int, int> p = st.top();
+                st.pop();
+                int currStart = p.first, currEnd = p.second;
+                for (int i = currStart; i <= currEnd; ++i) {
+                    if (dict[s[i]].first < start) {
+                        st.push({dict[s[i]].first, start - 1});
+                        start = dict[s[i]].first;
+                    }
+                    if (dict[s[i]].second > end) {
+                        st.push({end + 1, dict[s[i]].second});
+                        end = dict[s[i]].second;
+                    }
+                }
+            }
+        }
+
+        vector<pair<int, int>> subIdxs;
+        for (auto d : dict)
+            subIdxs.push_back(d.second);
+        
+        sort(subIdxs.begin(), subIdxs.end(), customSort);
+        
+        vector<pair<int, int>> seenIdxs;
+
+        for (auto idxs : subIdxs) {
+            int start = idxs.first, end = idxs.second;
+            if (isOverlap(seenIdxs, start, end)) continue;
+            seenIdxs.push_back({start, end});
+            ans.push_back(s.substr(start, end - start + 1));
+        }
+        
+        return ans;
+    }
+};
+PROBLEM-10:
+Dijkstra’s Algorithm
+CODE:
+ vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+    {
+        // Code here
+       priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        vector<int>distTo(V,INT_MAX);
+        
+        distTo[S]=0;
+        pq.push(make_pair(0,S));
+        
+        while(!pq.empty())
+        {
+            int dist=pq.top().first;
+            int prev=pq.top().second;
+            pq.pop();
+            
+            vector<vector<int>>::iterator i;
+            
+            for(auto ele:adj[prev])
+            {
+                int next=ele[0];
+                int nextDist=ele[1];
+                
+                if(distTo[next]>distTo[prev]+nextDist)
+                {
+                    distTo[next]=distTo[prev]+nextDist;
+                    pq.push(make_pair(distTo[next],next));
+                }
+            }
+        }
+        return distTo;
+    
+    }
+PROBLEM-11:
+Bellman-Ford Algo
+CODE:
+class Solution{
+	public:
+	/*  Function to implement Dijkstra
+    *   adj: vector of vectors which represents the graph
+    *   S: source vertex to start traversing graph with
+    *   V: number of vertices
+    */
+    vector <int> bellman_ford(int V, vector<vector<int>> adj, int S) {
+        // Code here
+               int inf = 100000000;
+        vector<int> dis(V, inf);
+        dis[S] = 0;
+        for(int i=1; i<=V-1; i++) {
+            for(auto& it: adj) {
+                if(dis[it[0]]==inf) continue;
+                if(dis[it[0]] + it[2] < dis[it[1]]) 
+                    dis[it[1]] = dis[it[0]] + it[2];
+            }
+        }
+        return dis;
+    }
+};
+PROBLEM-12:
+Bellman-Ford Algo
+CODE:
+vector <int> bellman_ford(int V, vector<vector<int>> adj, int S) {
+        // Code here
+               int inf = 100000000;
+        vector<int> dis(V, inf);
+        dis[S] = 0;
+        for(int i=1; i<=V-1; i++) {
+            for(auto& it: adj) {
+                if(dis[it[0]]==inf) continue;
+                if(dis[it[0]] + it[2] < dis[it[1]]) 
+                    dis[it[1]] = dis[it[0]] + it[2];
+            }
+        }
+        return dis;
+    }

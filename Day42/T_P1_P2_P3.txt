@@ -1,0 +1,114 @@
+PROBLEM-1:
+Implement Trie (Prefix Tree)
+CODE:
+Trie() {
+		//creating new obejct
+		root = new Node();
+	}
+
+	void insert(string word) {
+		//initializing dummy node pointing to root initially
+		Node *node = root;
+		for (int i = 0; i < word.size(); i++) {
+			if (!node->containKey(word[i])) {
+				node->put(word[i], new Node());
+			}
+			//moves to reference trie
+			node = node->get(word[i]);
+		}
+		node->setEnd();
+	}
+
+	bool search(string word) {
+		Node *node = root;
+		for (int i = 0; i < word.size(); i++) {
+			if (!node->containKey(word[i])) {
+				return false;
+			}
+			node = node->get(word[i]);
+		}
+		return node->isEnd();
+	}
+
+	bool startsWith(string prefix) {
+		Node* node = root;
+		for (int i = 0; i < prefix.size(); i++) {
+			if (!node->containKey(prefix[i])) {
+				return false;
+			}
+			node = node->get(prefix[i]);
+		}
+		return true;
+	}
+};
+PROBLEM-2:
+Implement Trie – 2 (Prefix Tree)
+CODE:
+Trie() {
+      root = new Node();
+    }
+
+  /** Inserts a word into the trie. */
+  void insert(string word) {
+    Node * node = root;
+    for (int i = 0; i < word.length(); i++) {
+      if (!node -> containsKey(word[i])) {
+        node -> put(word[i], new Node());
+      }
+      node = node -> get(word[i]);
+      node -> increasePrefix();
+    }
+    node -> increaseEnd();
+  }
+
+ int countWordsEqualTo(string &word)
+    {
+        Node *node = root;
+        for (int i = 0; i < word.length(); i++)
+        {
+            if (node->containsKey(word[i]))
+            {
+                node = node->get(word[i]);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        return node->getEnd();
+    }
+
+
+  int countWordsStartingWith(string & word) {
+    Node * node = root;
+    for (int i = 0; i < word.length(); i++) {
+      if (node -> containsKey(word[i])) {
+        node = node -> get(word[i]);
+      } else {
+        return 0;
+      }
+    }
+    return node -> getPrefix();
+  }
+
+  void erase(string & word) {
+    Node * node = root;
+    for (int i = 0; i < word.length(); i++) {
+      if (node -> containsKey(word[i])) {
+        node = node -> get(word[i]);
+        node -> reducePrefix();
+      } else {
+        return;
+      }
+    }
+    node -> deleteEnd();
+  }
+};
+
+PROBLEM-3:
+Longest String with All Prefixes
+CODE:
+
+PROBLEM-4:
+Number of Distinct Substrings in a String
+CODE:

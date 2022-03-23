@@ -1,0 +1,87 @@
+PROBLEM-1:
+Replace all 0's with 5 
+CODE:
+int reverse(int n)
+{
+    int n1=0;
+    while(n>0)
+    {
+        int x=n%10;
+        if(x==0)
+        x=5;
+        n1=n1*10+x;
+        n/=10;
+    }
+    return n1;
+}
+int convertFive(int n) {
+    // Your code here
+    return (reverse(reverse(n)));
+    
+}
+PROBLEM-2:
+Third largest element
+CODE:
+ int thirdLargest(int a[], int n)
+    {
+         //Your code here
+         sort(a,a+n);
+          if(n>=3){
+         return a[n-3];
+          }
+          return -1;
+    }
+PROBLEM-3:
+Max and Second Max
+CODE:
+ vector<int> largestAndSecondLargest(int sizeOfArray, int arr[]){
+        int max = INT_MIN, max2= INT_MIN;
+        
+        /*********************************
+         * Your code here
+         * This function should return a
+         * vector with first element as
+         * max and second element as 
+         * second max
+         * *******************************/
+         vector<int>v;
+         for(int i=0;i<sizeOfArray;i++)
+         {
+             if(arr[i]>max2 and arr[i]!=max)
+             {
+                 if(arr[i]>max)
+                 {
+                 max2=max;
+                 max=arr[i];
+                 }
+             
+             else
+             max2=arr[i];
+         }
+         }  
+         if(max2==INT_MIN)
+         max2=-1;
+         v.push_back(max);
+         v.push_back(max2);
+         return v;
+    }
+PROBLEM-4:
+Minimum distance between two numbers
+CODE:
+int minDist(int a[], int n, int x, int y) {
+        // code here
+        int prev=-1;
+        int m=INT_MAX;
+        for(int i=0;i<n;i++)
+        {
+            if(a[i]==x || a[i]==y)
+            {
+                if(prev!=-1&& a[i]!=a[prev])
+                m=min(m,i-prev);
+                prev=i;
+            }
+        }
+        if(m==INT_MAX)
+        return -1;
+        return m;
+    }

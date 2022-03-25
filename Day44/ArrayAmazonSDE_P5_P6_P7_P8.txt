@@ -1,0 +1,129 @@
+PROBLEM-5:
+Rotate Array
+CODE:
+ void reverse(int arr[],int start,int end)
+    {
+        for(int i=start,j=end;i<=j;i++,j--)
+        {
+            int tmp=arr[i];
+            arr[i]=arr[j];
+            arr[j]=tmp;
+        }
+    }
+    void rotateArr(int arr[], int d, int n){
+        // code here
+         reverse(arr,0,n-1);
+         reverse(arr,0,n-d-1);
+         reverse(arr,n-d,n-1);
+    }
+PROBLEM-6:
+Max sum path in two arrays
+CODE:
+#include<bits/stdc++.h>
+using namespace std;
+
+
+
+ // } Driver Code Ends
+class Solution{
+    public:
+    /*You are required to complete this method*/
+     int max_path_sum(int A[], int B[], int l1, int l2)
+    {
+    
+        //Your code here
+        int res=0;
+        int i=0,j=0;
+        int asum=0,bsum=0;
+        while(i<l1 and j<l2)
+        {   
+            if(A[i]==B[j])
+            {
+            asum+=A[i++];
+            bsum+=B[j++];
+            res+=max(asum,bsum);
+            asum=0;
+            bsum=0;
+            
+        }
+        if(A[i]<B[j])
+        asum+=A[i++];
+        if(A[i]>B[j])
+        bsum+=B[j++];
+        }
+         while(i<l1){
+           asum+=A[i++];
+       }
+       while(j<l2){
+           bsum+=B[j++];
+       }
+       res+=max(asum,bsum);
+       return res;
+    }
+};
+
+// { Driver Code Starts.
+
+int main()
+{
+    int T;
+    cin>>T;
+
+    while(T--)
+    {
+        int N,M;
+        cin>>N>>M;
+        fflush(stdin);
+        int a[N],b[M];
+        for(int i=0;i<N;i++)
+            cin>>a[i];
+        for(int i=0;i<M;i++)
+            cin>>b[i];
+        Solution obj;
+        int result = obj.max_path_sum(a,b,N,M);
+        cout<<result<<endl;
+    }
+}
+PROBLEM-7:
+Remove duplicates in small prime array
+CODE:
+ vector<int> removeDuplicate(vector<int>& arr, int n)
+    {
+        // code here()
+        vector<int>v;
+        set<int>s;
+        for(int i=0;i<n;i++)
+        {
+            if(s.find(arr[i])==s.end())
+            {
+                s.insert(arr[i]);
+                v.push_back(arr[i]);
+            }
+        }
+        return v;
+    }
+PROBLEM-8:
+Max sum in the configuration 
+CODE:
+int max_sum(int A[],int N)
+{
+//Your code here
+   
+    int sum=0;
+    int prev_sum=0;
+    int max_sum=-9999;
+    for(int i=0;i<N;i++)
+    {
+        sum+=A[i];
+        prev_sum+=i*A[i];
+        
+    }
+    max_sum=prev_sum;
+    for(int i=1;i<N;i++)
+    {
+        int curr_sum=prev_sum-sum+N*A[i-1];
+        max_sum=max(max_sum,curr_sum);
+        prev_sum=curr_sum;
+    }
+    return max_sum;
+}
